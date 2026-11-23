@@ -1,3 +1,15 @@
+# MAHAVEL Studio V0.2.0 — mise à jour de la V0.1.0
+
+**Pour mettre à jour votre application existante, suivez d’abord `INSTALLATION_V020.md`.**
+Ne rejouez pas `001_initial.sql` : exécutez uniquement `002_collaboration.sql` après avoir sauvegardé votre base.
+Le ZIP contient une configuration Supabase volontairement vide ; conservez la vôtre.
+Les nouvelles fonctionnalités sont **à tester sur votre Supabase réel** ; cette livraison n’a pas été validée par un test multi-comptes ni sur des appareils physiques.
+L’import automatique d’emplois du temps PDF, les confirmations de lecture, les mentions @ et l’historique exhaustif restent à réaliser.
+
+---
+
+## Documentation initiale V0.1.0 (conservée pour référence)
+
 # MAHAVEL STUDIO — version de base 0.1.0
 
 Application PWA collaborative **en développement**, conçue pour GitHub Pages + Supabase. Le code comporte de vraies requêtes Supabase, mais **n'a pas été testé sur un projet Supabase réel ni sur des téléphones**. Ne pas considérer cette version comme prête pour des documents confidentiels avant les tests de sécurité.
