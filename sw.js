@@ -1,0 +1,5 @@
+const CACHE='mahavel-studio-v0.1.0';const CORE=['./','./index.html','./style.css','./js/app.js','./js/config.js','./js/service.js','./js/icons.js','./manifest.webmanifest','./assets/icon.svg'];
+self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE))));
+self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('mahavel-studio-')&&k!==CACHE)await caches.delete(k);await self.clients.claim()})()));
+self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});
+self.addEventListener('fetch',e=>{const url=new URL(e.request.url);if(e.request.method!=='GET'||url.pathname.includes('/auth/')||url.hostname.endsWith('supabase.co'))return;if(url.origin===self.location.origin){e.respondWith((async()=>{try{const r=await fetch(e.request);if(r.ok){let cache=await caches.open(CACHE);cache.put(e.request,r.clone())}return r}catch{return await caches.match(e.request)||Response.error()}})())}});
