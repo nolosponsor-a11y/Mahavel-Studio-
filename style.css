@@ -136,3 +136,18 @@ label{margin-bottom:5px;letter-spacing:0}
 .calevent:hover{background:color-mix(in srgb,var(--person),transparent 75%)}
 @media(max-width:900px){.chat-app{min-height:65vh;grid-template-columns:minmax(0,1fr)}.chat-list{display:flex;border-right:0}.chat-thread{display:none}.chat-app.show-thread .chat-list{display:none}.chat-app.show-thread .chat-thread{display:flex}.chat-thread-messages{max-height:calc(100dvh - 275px)}.back-chat{display:inline-flex;align-items:center;justify-content:center;min-width:40px;min-height:40px}.top-actions .connection{margin-right:2px}.top-actions .connection span{display:none}.topbar{padding:0 15px}.content{padding:20px 16px 100px}}
 @media(max-width:560px){.topbar .overline{display:none}.page-title{font-size:18px}.top-actions{gap:5px}.file-main-actions{gap:8px}.file-action{padding:13px 11px;gap:8px;min-height:76px}.file-action svg{width:20px;height:20px}.file-action strong{font-size:14px}.file-action small{font-size:10px}.calendar-utilities{align-items:flex-start}.calendar-toolbar .controls{width:100%}.calendar-toolbar select{max-width:calc(100vw - 90px)}.calday{min-height:86px;padding:4px}.calevent{font-size:9px}.schedule-slot{grid-template-columns:1fr auto}.chat-message{max-width:87%}.modal{padding:16px}.mobile-nav button{font-size:9px}}
+
+/* V0.3.1 — navigation, recherche et lecture sur mobile */
+.chat-tools{display:grid;gap:10px;padding:12px 14px;border-bottom:1px solid var(--border)}
+.chat-tools input{width:100%;min-width:0;border:1px solid var(--border);border-radius:10px;background:var(--bg-secondary);color:var(--text-primary);padding:12px 13px;outline:none}
+.chat-tools input:focus{border-color:var(--accent)}
+.chat-tools .btn{justify-content:center;display:flex;align-items:center;gap:8px;width:100%}
+.chat-tools .btn svg{width:17px;height:17px}
+.chat-contact[hidden]{display:none!important}
+.saved-list{display:grid;gap:9px;max-height:55vh;overflow:auto}
+.saved-row{display:grid;gap:5px;min-height:65px;text-align:left;border:1px solid var(--border);padding:12px 14px;border-radius:10px;background:var(--bg-secondary);color:var(--text-primary)}
+.saved-row:hover,.saved-row:focus-visible{border-color:var(--accent)}
+.saved-row span{line-height:1.5;word-break:break-word}
+.saved-row small{color:var(--text-secondary)}
+.sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+@media(max-width:650px){.calendar-toolbar,.calendar-utilities{gap:12px}.chat-tools{padding:10px}.saved-list{max-height:65vh}}
