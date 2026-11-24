@@ -9,6 +9,6 @@
  window.addEventListener('error',e=>diagnose('Erreur au démarrage',e.message||'Erreur de chargement'));
  window.addEventListener('unhandledrejection',e=>diagnose('Erreur de connexion',e.reason?.message||String(e.reason)));
  const guard=setTimeout(()=>diagnose('Délai de chargement dépassé','Le chargement du JavaScript ou de la connexion Supabase est bloqué.'),12000);
- import('./js/app.js?release=045-startfix').then(()=>{clearTimeout(guard);if(mount?.querySelector('.boot'))setTimeout(()=>diagnose('Démarrage incomplet','Le module est chargé mais l’interface ne s’est pas affichée.'),7000)}).catch(e=>{clearTimeout(guard);diagnose('Erreur de module JavaScript',e.message||String(e))});
+ import('./js/app.js?release=046-authfix').then(()=>{clearTimeout(guard);if(mount?.querySelector('.boot'))setTimeout(()=>diagnose('Démarrage incomplet','Le module est chargé mais l’interface ne s’est pas affichée.'),7000)}).catch(e=>{clearTimeout(guard);diagnose('Erreur de module JavaScript',e.message||String(e))});
 })();
 </script></body></html>
