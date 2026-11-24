@@ -80,7 +80,7 @@ if(form.id==='register'){
   }
   const redirectTo=location.origin+location.pathname;
   const {data, error:signupErr}=await client.auth.signUp({email,password:pw,options:{emailRedirectTo:redirectTo}});
-  if(signupErr)throw signupErr;
+  if(signupErr){if(/already registered|already exists|user already/i.test(signupErr.message||'')){const reset=await client.auth.resetPasswordForEmail(email,{redirectTo});if(reset.error)throw reset.error;error.style.color='var(--success,#87b4a3)';error.textContent='Cette adresse est déjà enregistrée. Consulte le nouvel e-mail reçu pour choisir ton mot de passe.';return}throw signupErr;}
   if(data.user && Array.isArray(data.user.identities) && data.user.identities.length===0){
     const reset=await client.auth.resetPasswordForEmail(email,{redirectTo});
     if(reset.error)throw reset.error;
