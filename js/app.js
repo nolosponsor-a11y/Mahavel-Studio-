@@ -1,4 +1,4 @@
-import {configured,db,query,mutate,remove} from './service.js';import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js';const VERSION='0.4.3';import {configureCalls,stopCalls,placeCall,acceptCall,declineCall,hangup,callActive} from './calls.js';import {icon} from './icons.js';
+import {configured,db,query,mutate,remove} from './service.js';import {SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY} from './config.js';const VERSION='0.4.4';import {configureCalls,stopCalls,placeCall,acceptCall,declineCall,hangup,callActive} from './calls.js';import {icon} from './icons.js';
 const root=document.querySelector('#app');const state={page:'home',user:null,workspace:null,rows:{},activeChat:null,month:new Date(),listeners:[],profile:[],role:'member',version:VERSION,calendarId:null,replyTo:null,chatView:'list',schedulePerson:null};
 const tabs=[['home','Accueil','home'],['calendar','Planning','calendar'],['tasks','Tâches','tasks'],['chat','Chat','chat'],['files','Fichiers','files'],['notifications','Notifications','bell'],['settings','Paramètres','settings']];
 const html=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const $=(s)=>document.querySelector(s);const fmt=s=>s?new Intl.DateTimeFormat('fr-FR',{dateStyle:'medium',timeZone:'Indian/Reunion'}).format(new Date(s)):'—';const hour=s=>s?new Intl.DateTimeFormat('fr-FR',{hour:'2-digit',minute:'2-digit',timeZone:'Indian/Reunion'}).format(new Date(s)):'—';const localDate=d=>new Intl.DateTimeFormat('en-CA',{timeZone:'Indian/Reunion',year:'numeric',month:'2-digit',day:'2-digit'}).format(d);const toast=m=>{let d=document.createElement('div');d.className='toast';d.textContent=m;document.body.append(d);setTimeout(()=>d.remove(),3800)};
@@ -14,7 +14,36 @@ function registerScreen(email=''){root.innerHTML=`<section class="auth"><h1>MAHA
 function passwordSetup(){
  root.innerHTML=`<section class="auth"><h1>MAHAVEL</h1><div class="sub">CRÉER MON MOT DE PASSE</div><form id="set-password"><div><label>Nouveau mot de passe</label><input type="password" name="password" required minlength="8" autocomplete="new-password"></div><div><label>Confirmer le mot de passe</label><input type="password" name="confirm" required minlength="8" autocomplete="new-password"></div><button type="submit" class="btn primary">Enregistrer mon mot de passe</button><p class="error" id="auth-error" role="alert"></p></form><p class="note">Choisissez un mot de passe personnel d'au moins 8 caractères. Ne le transmettez à personne.</p></section>`;
 }
-async function initialize(){if(!configured()){auth();return}try{let s=await db();s.auth.onAuthStateChange(async(event,session)=>{if(event==='PASSWORD_RECOVERY'){state.user=session?.user||null;passwordSetup();return}if(state.user?.id!==session?.user?.id){stopCalls();state.user=session?.user||null;await loadWorkspace()}});let {data:{session}}=await s.auth.getSession();state.user=session?.user||null;if(location.hash.includes('type=recovery')){passwordSetup();return}await loadWorkspace()}catch(e){root.innerHTML=`<section class="auth"><h1>Connexion indisponible</h1><p class="error">${html(e.message)}</p>${btn('Réessayer','retry')}</section>`}}
+async function initialize(){
+ if(!configured()){auth();return}
+ try{
+  const client=await db();
+  // IMPORTANT : ne pas lancer de requêtes Supabase depuis onAuthStateChange.
+  // Supabase conserve un verrou de session pendant ses notifications d'authentification.
+  const {data:{session},error:sessionError}=await client.auth.getSession();
+  if(sessionError)throw sessionError;
+  state.user=session?.user||null;
+  client.auth.onAuthStateChange((event,nextSession)=>{
+   if(event==='INITIAL_SESSION')return;
+   if(event==='PASSWORD_RECOVERY'){
+    state.user=nextSession?.user||null;
+    setTimeout(()=>passwordSetup(),0);
+    return;
+   }
+   const nextUser=nextSession?.user||null;
+   if(state.user?.id!==nextUser?.id){
+    stopCalls();
+    state.user=nextUser;
+    setTimeout(()=>loadWorkspace().catch(err=>{console.error('MAHAVEL session',err);root.innerHTML='<section class="auth"><h1>MAHAVEL</h1><p class="error">Échec de la connexion : '+html(err.message)+'</p><button class="btn" onclick="location.reload()">Réessayer</button></section>'}),0);
+   }
+  });
+  if(location.hash.includes('type=recovery')){passwordSetup();return}
+  await loadWorkspace();
+ }catch(e){
+  console.error('MAHAVEL startup',e);
+  root.innerHTML=`<section class="auth"><h1>Connexion indisponible</h1><p class="error">${html(e.message)}</p>${btn('Réessayer','retry')}</section>`;
+ }
+}
 async function loadWorkspace(){if(!state.user){auth();return}try{const s=await db();const {data,error}=await s.from('memberships').select('role,workspace_id,workspaces(id,name)').eq('user_id',state.user.id).limit(1).maybeSingle();if(error)throw error;if(!data){root.innerHTML=`<section class="auth"><h1>MAHAVEL</h1><p>Votre compte est connecté, mais il n'appartient à aucun espace de travail.</p><p class="note">Demandez à l'administrateur de vous ajouter dans la table memberships (voir README).</p>${btn('Déconnexion','logout')}</section>`;return}state.workspace=data.workspaces;state.role=data.role;await refresh();await realtime();renderShell();configureCalls({client:s,userId:state.user.id,workspaceId:state.workspace.id,incoming:incomingCall,ended:()=>{if(document.querySelector(".call-panel"))close()}})}catch(e){root.innerHTML=`<section class="auth"><h1>Accès non disponible</h1><p class="error">${html(e.message)}</p>${btn('Déconnexion','logout')}</section>`}}
 const resources=['projects','tasks','events','conversations','messages','documents','external_links','notifications','approvals','studio_calendars','profile_schedules'];
 async function refresh(){if(!state.workspace)return;state.loadErrors=[];await Promise.all(resources.map(async k=>{try{state.rows[k]=await query(k,state.workspace.id)}catch(e){state.rows[k]=[];state.loadErrors.push(k);console.warn(k,e.message)}}));const s=await db();if(state.rows.conversations?.length){const {data:members}=await s.from('conversation_members').select('*').in('conversation_id',state.rows.conversations.map(c=>c.id));state.rows.conversation_members=members||[]}else state.rows.conversation_members=[];const receipts=await s.from('conversation_reads').select('conversation_id,read_at').eq('user_id',state.user.id);state.rows.conversation_reads=receipts.error?[]:receipts.data||[];const msgs=state.rows.messages||[];for(const table of ['message_reactions','saved_messages']){if(msgs.length){const {data,error}=await s.from(table).select('*').in('message_id',msgs.map(m=>m.id));state.rows[table]=error?[]:data||[];if(error)console.warn(table,error.message)}else state.rows[table]=[]}const {data}=await s.from('profiles').select('id,display_name,color,avatar_url,job_title,contact_url,contact_email').limit(100);state.profile=data||[];await Promise.all(state.profile.filter(p=>p.avatar_url).map(async p=>{try{const {data,error}=await s.storage.from('studio-avatars').createSignedUrl(p.avatar_url,1800);if(!error)p.avatar_signed=data.signedUrl}catch{}}));setPersonTheme()}
