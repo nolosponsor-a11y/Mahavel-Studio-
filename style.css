@@ -151,3 +151,43 @@ label{margin-bottom:5px;letter-spacing:0}
 .saved-row small{color:var(--text-secondary)}
 .sr-only{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
 @media(max-width:650px){.calendar-toolbar,.calendar-utilities{gap:12px}.chat-tools{padding:10px}.saved-list{max-height:65vh}}
+
+/* V0.4.0 — direction éditoriale MAHAVEL, contraste raisonné et adaptation tactile */
+:root{
+ --bg-main:#101013;--bg-panel:#1a1b1f;--bg-secondary:#222329;
+ --border:#38373d;--accent:#c2a9a7;--accent-hover:#e2cfcd;
+ --text-primary:#eee9e6;--text-secondary:#a5a0a5;
+ --person-accent:#9b7979;
+ font-family:'Avenir Next','Bahnschrift','Segoe UI Variable','Helvetica Neue',Arial,sans-serif;
+}
+body{background:radial-gradient(ellipse 90% 56% at 90% -12%,#462c3425,transparent 70%),var(--bg-main)}
+.sidebar{background:linear-gradient(155deg,#1b1a1f 0%,#161619 100%);border-right:1px solid #343139}
+.brand{font-family:'Bahnschrift SemiCondensed','Avenir Next Condensed','Arial Narrow',sans-serif;font-size:30px;letter-spacing:.045em}
+.brand small{color:#b89b9a;letter-spacing:.43em}
+.overline,.panelhead,.studio-id,.caldate,.data-table th{font-family:'Consolas','SFMono-Regular',monospace;letter-spacing:.08em}
+.page-title,.sectionbar h2{font-family:'Avenir Next','Bahnschrift','Segoe UI Variable',sans-serif;font-weight:650;letter-spacing:-.045em}
+.page-title{font-size:25px}
+.topbar{border-bottom:1px solid #393038;background:#18171b99}
+.nav button.active{background:#372c32;color:#fff;border-left-color:#bf8f8f}
+.btn.primary{background:#cbb3af;border-color:#cbb3af;color:#21191c}
+.btn.primary:hover{background:#f0d7d1}
+.btn:hover,.context-action:hover,.file-action:hover{border-color:#a98189}
+.btn:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #d4b5b5;outline-offset:3px}
+.file-action{background:#252127;border-color:#484048}
+.file-action:nth-child(2){background:#211e23}
+.file-action svg{stroke:#d0a5a9}
+.chat-contact.selected{border-left-color:#b98b91}
+.chat-message.mine .bubble{background:#372c35;border-color:#614856}
+.unread-badge{display:inline-flex;align-items:center;justify-content:center;background:#b97a80;color:#fff;font:700 10px/1 'Consolas',monospace;min-width:18px;height:18px;padding:0 4px;border-radius:10px;vertical-align:middle;margin-left:3px}
+.unread-badge[hidden]{display:none!important}.unread-badge.in-list{margin-left:auto}
+.notification-entry{width:100%;min-height:65px;text-align:left;padding:13px 17px;border:0;border-bottom:1px solid var(--border);background:transparent;color:var(--text-primary);display:grid;gap:5px}
+.notification-entry.new{box-shadow:inset 3px 0 #b97a80;background:#262026}
+.notification-entry span{font-size:12px;color:var(--text-secondary)}.notification-entry em{font:10px monospace;color:#cbaaaa;font-style:normal}
+.call-buttons{display:flex;gap:8px;margin-left:auto}.call-buttons .btn{min-height:40px}
+.call-panel{text-align:center}.call-panel .btn{margin-top:12px}.call-videos{display:flex;align-items:center;justify-content:center;gap:10px;min-height:150px;flex-wrap:wrap;background:#111216;padding:12px}
+.call-videos video{max-width:100%;width:220px;max-height:230px;object-fit:contain;background:#08080a}
+.call-audio-symbol{font:700 24px 'Bahnschrift','Consolas',monospace;color:#cfa9ae;letter-spacing:.18em}
+.incoming-call{text-align:center}.incoming-call h3{font-size:26px;margin:12px 0}.incoming-call .actions{justify-content:center}
+@media(max-width:900px){.chat-thread-header{flex-wrap:wrap}.call-buttons{flex-basis:100%;justify-content:flex-end}.topbar{min-height:62px}}
+@media(max-width:600px){.btn,.file-action,.icon-btn,.chat-contact,.context-action,.recipient-choice{min-height:44px}.page-title{font-size:20px}.content{padding:14px 12px 100px}.modal{width:100%;max-height:90dvh}.data-table{min-width:580px}.call-videos video{width:145px}.chat-app{min-height:calc(100dvh - 170px)}.chat-thread-messages{max-height:calc(100dvh - 310px)}.chat-message{max-width:90%}.calendar{overflow-x:auto}.calday{min-height:85px}.calweek{font-size:8px}.formgrid{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

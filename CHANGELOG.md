@@ -1,19 +1,15 @@
-# Historique des versions
+# MAHAVEL Studio — historique
 
-## 0.2.0 — évolution de la V0.1.0
+## 0.4.0 candidate — 24 novembre 2026
+- Proposition d'appels privés WebRTC audio/vidéo avec signalisation Supabase ; STUN uniquement, TURN non fourni et tests multi-appareils requis.
+- Messages non lus par conversation avec accusé d'ouverture, alertes internes consultables.
+- Import JSON avec filtrage des doublons et clés de déduplication en base (migration 004 requise).
+- Workflow de validation par manager : validation ou corrections commentées, enregistrement atomique en base.
+- Notifications automatiques après affectation ou changement de statut de tâche.
+- Edge Function de nettoyage des documents expirés au bout de 6 jours, à déployer et planifier séparément ; n'efface pas les orphelins.
+- Renforcement des accès SQL pour les nouvelles tables et restrictions des RPC SECURITY DEFINER existantes.
+- Direction visuelle plus éditoriale, responsive, interactions clavier et tactiles.
+- Pas encore testée de bout en bout en conditions de production : voir INSTALLATION_V040.md.
 
-- Nouvelle direction graphique, barre haute compacte et navigation mobile inchangée à cinq onglets.
-- Logo retour accueil, compte et déconnexion repensés.
-- Profils : nom, couleur, fonction, lien HTTPS et photo privée.
-- Couleurs des membres dans les tâches, le chat et le calendrier.
-- Tâches avec assignation et liaison à un projet.
-- Nouveau chat privé / groupe protégé par RLS ; messages avec lien interne vers les documents ciblés.
-- Partage ciblé de fichiers et messages automatiques aux destinataires.
-- Suppression sous permission de tâches, projets, événements, liens et messages de l’auteur.
-- Ajout manuel d’emplois du temps au nom d’un collaborateur par un responsable.
-- Notifications serveur de messages privés et tâches affectées.
-- Migrations SQL non destructives de l’existant.
-
-### Non finalisé
-
-Extraction automatique fiable depuis PDF, mentions @, accusés de lecture, historique complet, tests multi-comptes et appareils, configuration effective des nettoyages automatiques.
+## 0.3.1
+- Recherche de conversations, messages sauvegardés, renommage de calendriers, corrections du chargement et des fuseaux.
