@@ -271,3 +271,115 @@ html,body{max-width:100%;overflow-x:clip;overscroll-behavior-x:none}
  .chat-peer b{font-size:13px}
  .chat-app .composer{padding:8px}
 }
+
+/* MAHAVEL v0.4.8 — correctif de cascade : l'ancien .chat-thread-header>div
+   imposait display:grid aux commandes et empilait les boutons sur iPhone. */
+.chat-thread-header>.chat-toolbar{
+ display:flex!important;
+ flex-direction:row!important;
+ flex-wrap:nowrap!important;
+ align-items:center!important;
+ justify-content:flex-end!important;
+ gap:4px!important;
+ min-width:0!important;
+ width:auto!important;
+ max-width:max-content;
+ flex:0 0 auto!important;
+ margin:0!important;
+}
+.chat-thread-header>.chat-peer{
+ display:flex!important;
+ flex-direction:column!important;
+ justify-content:center;
+ flex:1 1 auto!important;
+ min-width:0!important;
+ overflow:hidden;
+}
+.chat-toolbar>.chat-tool{
+ display:inline-flex!important;
+ flex:0 0 38px!important;
+ width:38px!important;
+ min-width:38px!important;
+ height:40px!important;
+ min-height:40px!important;
+ padding:0!important;
+ align-items:center;
+ justify-content:center;
+ color:var(--text-primary);
+ border:1px solid #414047;
+ border-radius:9px;
+ background:#232329;
+ font-size:17px;
+ line-height:1;
+ box-sizing:border-box;
+}
+.chat-toolbar>.chat-tool svg{
+ display:block!important;
+ width:19px!important;
+ height:19px!important;
+ stroke:currentColor;
+ stroke-width:1.8;
+}
+.chat-toolbar>.chat-more{font-size:21px}
+@media(max-width:900px){
+ .chat-thread-header{
+  display:flex!important;
+  flex-wrap:nowrap!important;
+  flex-direction:row!important;
+  align-items:center!important;
+  justify-content:flex-start!important;
+  gap:7px!important;
+  width:100%;
+  min-width:0;
+  height:60px!important;
+  min-height:60px!important;
+  max-height:60px!important;
+  box-sizing:border-box;
+  padding:7px 8px!important;
+  overflow:hidden;
+ }
+ .chat-thread-header>.back-chat{
+  display:inline-flex!important;
+  position:static!important;
+  flex:0 0 38px!important;
+  width:38px!important;
+  min-width:38px!important;
+  height:40px!important;
+  min-height:40px!important;
+  margin:0!important;
+  padding:0!important;
+ }
+ .chat-thread-header>.chat-peer b{
+  font-size:14px;
+  max-width:100%;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+ }
+ .chat-thread-header>.chat-peer .meta{
+  font-size:10px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+ }
+ .chat-app.show-thread .chat-thread{
+  min-height:0!important;
+  height:100%!important;
+  overflow:hidden!important;
+ }
+ .chat-thread-messages{
+  min-height:0!important;
+  flex:1 1 auto!important;
+  max-height:none!important;
+  overflow-y:auto!important;
+  overscroll-behavior-y:contain;
+ }
+ .chat-app .composer{flex:0 0 auto!important}
+ .chat-app{height:calc(100dvh - 170px - env(safe-area-inset-bottom));min-height:280px}
+}
+@media(max-width:370px){
+ .chat-thread-header{gap:5px!important;padding:6px!important}
+ .chat-toolbar>.chat-tool{flex-basis:34px!important;width:34px!important;min-width:34px!important}
+ .chat-thread-header>.back-chat{flex-basis:34px!important;min-width:34px!important;width:34px!important}
+ .chat-thread-header>.chat-peer b{font-size:12px}
+}
