@@ -1,0 +1,24 @@
+MAHAVEL Studio V0.2.0 — correctif ciblé des documents
+
+Fichiers a remplacer sur GitHub dans le depot existant :
+- js/service.js
+- sw.js
+
+Ne PAS remplacer js/config.js : il contient votre URL et votre cle publique Supabase.
+Ne pas relancer les migrations SQL ni desactiver RLS.
+
+Pourquoi : les insertions dans documents ne demandent plus la lecture immediate de
+la ligne creee, tout en conservant un identifiant UUID pour les destinataires.
+Le nom de cache du service worker a ete modifie pour forcer la mise a jour.
+
+Tests :
+1. Enregistrer les deux fichiers sur GitHub dans les memes chemins.
+2. Ouvrir l'application, aller dans Parametres > Rechercher les mises a jour.
+3. Fermer et rouvrir ou rafraichir une fois la nouvelle version activee.
+4. Tester un petit document sans information confidentielle en mode Toute l'equipe.
+5. Verifier qu'il est affiche apres actualisation et telechargeable.
+6. Tester ensuite le mode Personnes selectionnees avec un compte test uniquement.
+
+Ce correctif n'a pas ete teste sur votre projet Supabase.
+Si l'erreur RLS persiste, il faudra comparer les valeurs reellement envoyees avec
+les conditions doc_insert et inspecter les logs Supabase, sans elargir les droits.
