@@ -1,4 +1,4 @@
-const CACHE='mahavel-studio-v0.4.6-chat-options';const CORE=['./','./index.html','./style.css','./js/app.js','./js/config.js','./js/service.js','./js/icons.js','./js/calls.js','./manifest.webmanifest','./assets/icon.svg'];
+const CACHE='mahavel-studio-v0.4.7-compactchat';const CORE=['./','./index.html','./style.css','./js/app.js','./js/config.js','./js/service.js','./js/icons.js','./js/calls.js','./manifest.webmanifest','./assets/icon.svg'];
 self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE))));
 self.addEventListener('activate',e=>e.waitUntil((async()=>{for(const k of await caches.keys())if(k.startsWith('mahavel-studio-')&&k!==CACHE)await caches.delete(k);await self.clients.claim()})()));
 self.addEventListener('message',e=>{if(e.data?.type==='SKIP_WAITING')self.skipWaiting()});
